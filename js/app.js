@@ -20,7 +20,6 @@ var initLocs = [
 	          lat: '32.910725',
 	          lng: '-96.5801205',
 	          fsId: '4b295ce1f964a520a29d24e3'
-
                  },
 	         {
 	          name: 'McDonalds',
@@ -28,7 +27,6 @@ var initLocs = [
 	          lat: '32.9175869',
 	          lng: '-96.5209452',
 	          fsId: '4bc1e99074a9a5932d61d2f6'
-
                  },
 	         {
 	          name: 'Chik-Fil-a',
@@ -36,9 +34,7 @@ var initLocs = [
 	          lat: '32.9099741',
 	          lng: '-96.5758744',
 	          fsId: '4bc0bb262a89ef3be803f188'
-
                  } 
-
                ];
 //set up Location model,
 //this will include data from foursquare:
@@ -57,12 +53,12 @@ var Location = function(data){
 // function to open the menu
 function menu_open(){
   document.getElementById('locationlist').style.display = "block";
-};
+}
 
 // function to close the menu
 function menu_close(){
   document.getElementById('locationlist').style.display = "none";
-};
+}
 
 // set up the map
 var map;
@@ -73,7 +69,7 @@ function initMap() {
      });
 // call the applybindings here so that it loads the page after
 // the map
-     ko.applyBindings(new ViewModel())
+     ko.applyBindings(new ViewModel());
 
 };
 
@@ -155,27 +151,33 @@ var ViewModel = function(){
    //function to show the location on the map when the 
    //user mouses over the listed item
    self.showLoc = function (eachItem) {
+	eachItem.marker.setMap(map);
         google.maps.event.trigger(eachItem.marker, 'click');
     };
 
    //function to show the selected location in dropdown
    // and hide the others.
    self.showSingleLoc = function (selectedValue) {
+
 	 //if selectedValue is defined, hide all markers
          if(selectedValue){
            for (var i = 0; i < markers.length; i++) {
               markers[i].setMap(null);
            }
+
            //show selected Marker, and bounce it
            selectedValue.marker.setMap(map);
            google.maps.event.trigger(selectedValue.marker, 'click');
+
           }
+
 	  //if selectedValue is undefined (means All was selected)
 	  // show all
 	  else{
-            for (var i = 0; i < markers.length; i++) {
+           
+	    for (var i = 0; i < markers.length; i++) {
               markers[i].setMap(map);
-           }
+            }
 
 	  }
    };
