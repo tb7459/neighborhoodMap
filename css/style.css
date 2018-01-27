@@ -1,0 +1,32 @@
+html{ 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    background-color: silver; 
+}
+
+body{ 
+    height: 100%; 
+    margin: 0; 
+    padding: 0;
+    background-color: silver; 
+}
+
+#map{ 
+    height: 90%; 
+    width: 100%; 
+}
+
+#heading{
+    height:5%; 
+    width: 100%;
+}
+
+.loc-sidebar{
+    width:200px;
+    position:fixed;
+    z-index:1;
+    overflow:auto;
+    display:none;
+    background-color:silver
+}
