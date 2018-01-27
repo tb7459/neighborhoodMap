@@ -6,6 +6,10 @@ Description:
   the corresponding marker to bounce and location information ( from foursquare.com) to display.
   A filter drop-down is provided that will display only the filtered location and it's information, which 
   defaults to All, and will display all.
+ 
+To start:
+  copy or clone repository 'https://github.com/tb7459/neighborhoodMap.git'
+  and navigate to <filepath>/neighborhoodMap/index.html
 
 To Add new locations:
   If a new location is wanted, you must get the foursquare.com, and the lat and lng from google maps

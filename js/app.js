@@ -71,7 +71,7 @@ function initMap() {
 // the map
      ko.applyBindings(new ViewModel());
 
-};
+}
 
 var ViewModel = function(){
 
@@ -123,11 +123,7 @@ var ViewModel = function(){
 		 var url = result.hasOwnProperty('url') ? result.url : '';
                  eachItem.url(url || '');
 
-	         var contentString = '<b>'+eachItem.name()+'</b>' + '</br>'
-				     + eachItem.address() + 
-				     '</br></br><b>FourSquare Description</b>:</br>' +
-				     description + '</br></br><b>FourSquare rating: ' +
-				     rating + '</b></br></br><b>URL</b>:</br>' + url; 
+	         var contentString = '<b>' + eachItem.name() + '</b></br>'+ eachItem.address() + '</br></br><b>FourSquare Description</b>:</br>' +  description + '</br></br><b>FourSquare rating: ' + rating + '</b></br></br><b>URL</b>:</br>' + url; 
 	         google.maps.event.addListener(eachItem.marker, 'click', function () {
                    dataWindow.open(map, this);
                    eachItem.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -175,8 +171,8 @@ var ViewModel = function(){
 	  // show all
 	  else{
            
-	    for (var i = 0; i < markers.length; i++) {
-              markers[i].setMap(map);
+	    for (var j = 0; j< markers.length; j++) {
+              markers[j].setMap(map);
             }
 
 	  }
