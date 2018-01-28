@@ -176,6 +176,6 @@ var ViewModel = function(){
 	  self.visibleLocs().forEach(function(loc){
 	        loc.marker.setVisible(true);
 	  });
-    }
+    };
    
 };
