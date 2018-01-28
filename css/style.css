@@ -12,13 +12,20 @@ body{
     background-color: silver;
 }
 
+ul {
+    list-style-type: none;
+    margin: 5px;
+    padding: 2px;
+    border: 1px;
+}
+
 #map{
     height: 90%;
     width: 100%;
 }
 
 #heading{
-    height:5%;
+    height: 35px;
     width: 100%;
 }
 

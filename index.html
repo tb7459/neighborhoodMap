@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neighborhood Map</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -10,11 +11,16 @@
       <ul>
          <li onClick="menu_close()">Close x</li>
       </ul>
-      <ul id="loc-list" data-bind="foreach: locList">
-         <li data-bind="text: name,
-	                event: {click: $parent.showLoc}"></li> 
-      </ul>
       <form name="locForm">
+      </br>
+      <b>Location Filter:</b>
+      <input data-bind="textInput: locName, event:{keyup: goForm}" id="locName">
+      <ul id="loc-list" data-bind="foreach: visibleLocs">
+         <li data-bind="text: name,
+	                event: {click: $parent.showLoc},
+			visible: showListItem"></li> 
+      </ul>
+      <!---
 	    <b>Location Filter:</b>
             <select name="locSel" id="locSel" data-bind="options: locList,
 	                                                 optionsCaption: 'All',
@@ -22,16 +28,18 @@
 							 value: selectedValue,
 							 event: {change: showSingleLoc(selectedValue)}">
             </select>
+    --->
       </form>
    </div>
    <div id="heading" >
       <h2 id="mapName"><button name="menuBtn" onclick="menu_open()">☰</button> My Neighborhood Map </h2>
       <div id="mapdisp"></div>
    </div>
-   <div id="map"></div>
    <div id="error"></div>
+   <div id="map"></div>
    <script async defer
-           src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBYT4m8fqXZXueyBH7_OolgGseabZ6-LBk&callback=initMap">
+           src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBYT4m8fqXZXueyBH7_OolgGseabZ6-LBk&callback=initMap"
+	   onerror="alert('Google maps failed to load, please try again');">
    </script>
    <script src="js/lib/jquery.min.js"></script>
    <script src="js/app.js"></script>

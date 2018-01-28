@@ -40,16 +40,20 @@ var initLocs = [
 //this will include data from foursquare:
 //(description, rating, and url)
 var Location = function(data){
-   this.name    = data.name;
-   this.address = data.address;
-   this.lat     = data.lat;
-   this.lng     = data.lng;
-   this.fsId    = data.fsId;
-   this.showListItem = 1;
+   this.name    = ko.observable(data.name);
+   this.address = ko.observable(data.address);
+   this.lat     = ko.observable(data.lat);
+   this.lng     = ko.observable(data.lng);
+   this.fsId    = ko.observable(data.fsId);
    this.desc    = ko.observable('');
    this.rtg     = ko.observable('');
    this.url     = ko.observable('');
 };
+
+// error function
+function errorFunc(){
+   alert("Google maps failed to load, please try again");
+}
 
 // function to open the menu
 function menu_open(){
@@ -77,12 +81,9 @@ function initMap() {
 var ViewModel = function(){
 
    var self = this; 
-   self.locName = ko.observable('');
    this.locList = ko.observableArray([]);
-    
    // initialize the selectedValue variable for user input
-   this.selectedValue = 0;
-
+   this.selectedValue = null;
 
    //initialize marker variable and markers array
    var marker;
@@ -98,21 +99,19 @@ var ViewModel = function(){
        self.locList.push( new Location(locItem));
    });
 
-   
-   
    //for each item in locList, set up marker and add the event listeners
    self.locList().forEach(function(eachItem){
 	    marker = new google.maps.Marker({
-            position: new google.maps.LatLng(eachItem.lat, eachItem.lng),
+            position: new google.maps.LatLng(eachItem.lat(), eachItem.lng()),
             map: map,
-            title: eachItem.name,
+            title: eachItem.name(),
             animation: google.maps.Animation.DROP
         });
         eachItem.marker = marker;
         markers.push(marker);
 
 	$.ajax({
-		url: 'https://api.foursquare.com/v2/venues/' + eachItem.fsId + 
+		url: 'https://api.foursquare.com/v2/venues/' + eachItem.fsId() + 
 		'?v=201708011111111111&client_id=QKXKWPUXEMGHLJO1OFLZD2WIHTLBNXM30Q1DIKUHVMT3PCG2' + 
 		'&client_secret=KFZ1PLF3QTY2NGBAYMILJ3UGUZH5GCLYXOYVIMYVL1XO4E4T',
 		datatype: "json",
@@ -129,7 +128,7 @@ var ViewModel = function(){
 		 var url = result.hasOwnProperty('url') ? result.url : '';
                  eachItem.url(url || '');
 
-	         var contentString = '<b>' + eachItem.name + '</b></br>'+ eachItem.address + '</br></br><b>FourSquare Description</b>:</br>' +  description + '</br></br><b>FourSquare rating: ' + rating + '</b></br></br><b>URL</b>:</br><a href="' + url + '" target="_blank">' + url + '</a>'; 
+	         var contentString = '<b>' + eachItem.name() + '</b></br>'+ eachItem.address() + '</br></br><b>FourSquare Description</b>:</br>' +  description + '</br></br><b>FourSquare rating: ' + rating + '</b></br></br><b>URL</b>:</br>' + url; 
 	         google.maps.event.addListener(eachItem.marker, 'click', function () {
                    dataWindow.open(map, this);
                    eachItem.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -153,29 +152,36 @@ var ViewModel = function(){
    //function to show the location on the map when the 
    //user mouses over the listed item
    self.showLoc = function (eachItem) {
+	eachItem.marker.setMap(map);
         google.maps.event.trigger(eachItem.marker, 'click');
     };
 
-    self.visibleLocs = ko.observableArray();
-   
-    self.locList().forEach(function(eachLoc){
-        self.visibleLocs.push(eachLoc); 
-    }); 
+   //function to show the selected location in dropdown
+   // and hide the others.
+   self.showSingleLoc = function (selectedValue) {
 
-    self.goForm = function(){
-	  var inpLoc = self.locName();
-	  self.visibleLocs.removeAll();
-	  self.locList().forEach(function(eachLoc){
-            eachLoc.marker.setVisible(false);
+	 //if selectedValue is defined, hide all markers
+         if(selectedValue){
+           for (var i = 0; i < markers.length; i++) {
+              markers[i].setMap(null);
+           }
 
-            if (eachLoc.name.toLowerCase().indexOf(inpLoc) !== -1) {
-                self.visibleLocs.push(eachLoc);
+           //show selected Marker, and bounce it
+           selectedValue.marker.setMap(map);
+           google.maps.event.trigger(selectedValue.marker, 'click');
+
+          }
+
+	  //if selectedValue is undefined (means All was selected)
+	  // show all
+	  else{
+           
+	    for (var j = 0; j< markers.length; j++) {
+              markers[j].setMap(map);
             }
-	  });
 
-	  self.visibleLocs().forEach(function(loc){
-	        loc.marker.setVisible(true);
-	  });
-    }
+	  }
+   };
+
    
 };
